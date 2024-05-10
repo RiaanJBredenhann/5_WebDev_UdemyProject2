@@ -6,10 +6,11 @@ const Register = (props) => {
     const [data, setData] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        error: null
     });
 
-    const {name, email, password} = data;
+    const {name, email, password, error} = data;
 
     const handleChange = (e) => {
         setData({...data, [e.target.name]: e.target.value})
@@ -19,14 +20,17 @@ const Register = (props) => {
         e.preventDefault();
 
         try {
+            setData({...data, error: null});
             await axios.post('/auth/register', {name, email, password}, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
-            props.history.push('/login')
+
+            props.history.push('/login');
+            
         } catch (err) {
-            console.log(err);
+            setData({...data, error: err.response.data.error})
         }
     };
 
@@ -36,6 +40,7 @@ const Register = (props) => {
 
             <div className='card p-5 shadow'>
                 <form>
+
                     <div className='form-group'>
                         <label htmlFor='name'>Name</label>
                         <input className='form-control' type='name' name='name' value={name} onChange={handleChange}></input>
@@ -48,6 +53,8 @@ const Register = (props) => {
                         <label htmlFor='password'>Password</label>
                         <input className='form-control' type='password' name='password' value={password} onChange={handleChange}></input>
                     </div>
+
+                    {error ? <p className='text-danger'>{error}</p> : null}
 
                     <div className='text-center'>
                         <button className='btn btn-primary' onClick={handleSubmit}>Register</button>

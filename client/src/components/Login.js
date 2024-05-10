@@ -19,15 +19,18 @@ const Login = (props) => {
         e.preventDefault();
 
         try {
+            setData({...data, error: null});
             const res = await axios.post('/auth/login', {email, password}, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
+
             localStorage.setItem('token', res.data.token);
             props.history.push('/');
+            
         } catch (err) {
-            setData({...data, error: err.response.data.error})
+            setData({...data, error: err.response.data.error});
         }
     };
 
@@ -36,7 +39,7 @@ const Login = (props) => {
             <h4 className='text-muted text-center mb-5'>Log into your account</h4>\
             <div className='car dp-5 shadow'>
                 <form>
-                    
+
                     <div className='form-group'>
                         <label htmlFor='email'>Email</label>
                         <input className='form-control' type='email' name='email' value={email} onChange={handleChange}></input>
@@ -46,7 +49,7 @@ const Login = (props) => {
                         <input className='form-control' type='password' name='password' value={password} onChange={handleChange}></input>
                     </div>
 
-                    {error ? <p className='text-danger'>(error)</p> : null}
+                    {error ? <p className='text-danger'>{error}</p> : null}
 
                     <div className='text-center'>
                         <button className='btn btn-primary' onClick={handleSubmit}>Login</button>
