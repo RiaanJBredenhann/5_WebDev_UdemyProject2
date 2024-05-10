@@ -9,11 +9,11 @@ const Register = (props) => {
         password: ""
     });
 
-    const {name, email, password} = data
+    const {name, email, password} = data;
 
     const handleChange = (e) => {
         setData({...data, [e.target.name]: e.target.value})
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,14 +21,14 @@ const Register = (props) => {
         try {
             await axios.post('/auth/register', {name, email, password}, {
                 headers: {
-                    "content-Type": "application/json", 
+                    "Content-Type": "application/json"
                 }
             });
             props.history.push('/login')
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     return (
         <div className='form mt-5'>
