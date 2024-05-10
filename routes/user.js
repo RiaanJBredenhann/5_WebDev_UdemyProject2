@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const { Router } = require('express')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const {requireLogin} = require('../middleware/auth')
 
 // Register User
 Router.post('/register', async (req, res) => {
@@ -45,10 +46,20 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
             expiresIn: "1h"
         });
-        return res.json(token);
+        return res.json({token});
 
     } catch (err) {
         console.log(err.message)
+    }
+});
+
+router.get('/', reqyuireLogin, async (req, res) => {
+    console.log(req.user);
+    try {
+        const user = await User.findById(req.user._id).select("-password");
+        res.json(user);
+    } catch (err) {
+        console.log(err)
     }
 });
 
