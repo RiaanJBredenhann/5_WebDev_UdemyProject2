@@ -32,7 +32,7 @@ const Register = (props) => {
 
     return (
         <div className='form mt-5'>
-            <h4 className='text-mutated text-center mb-5'>Create an Account</h4>
+            <h4 className='text-muted text-center mb-5'>Create an Account</h4>
 
             <div className='card p-5 shadow'>
                 <form>
@@ -58,5 +58,7 @@ const Register = (props) => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
+
+export default Register;
